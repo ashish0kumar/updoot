@@ -7,8 +7,9 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { UserDropdown } from "./UserDropdown";
 
 export async function Navbar() {
-    const {getUser} = getKindeServerSession();
+    const { getUser } = getKindeServerSession();
     const user = await getUser();
+    const avatarUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${user?.email || user?.id}`;
 
     return (
         <nav className="h-[10vh] w-full flex items-center justify-between border-b px-5 lg:px-14">
@@ -20,7 +21,7 @@ export async function Navbar() {
             <div className="flex items-center gap-x-4">
                 <ThemeToggle />
                 {user ? (
-                    <UserDropdown userImage={user.picture} />
+                    <UserDropdown userImage={avatarUrl} />
                 ) : (
                     <div className="flex item-center gap-x-4">
                         <Button variant="secondary" asChild><RegisterLink>Sign up</RegisterLink></Button>
