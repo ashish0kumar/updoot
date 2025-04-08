@@ -28,7 +28,7 @@ export default async function SettingsPage() {
     
     return (
         <div className="max-w-[1000px] mx-auto flex flex-col mt-4">
-            <SettingsForm />
+            <SettingsForm username={data?.userName} />
         </div>
     )
 }

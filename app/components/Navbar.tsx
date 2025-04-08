@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowBigUp } from "lucide-react";
+import { CircleChevronUp } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
@@ -14,8 +14,8 @@ export async function Navbar() {
     return (
         <nav className="h-[10vh] w-full flex items-center justify-between border-b px-5 lg:px-14">
             <Link href="/" className="flex items-center gap-x-3">
-                <ArrowBigUp className="text-orange-600" />
-                <h1 className="w-fit hidden lg:block text-2xl font-bold text-orange-600">Updoot</h1>
+                <CircleChevronUp className="text-orange-600" />
+                <h1 className="w-fit hidden lg:block text-3xl font-extrabold text-orange-600">Updoot</h1>
             </Link>
 
             <div className="flex items-center gap-x-4">
