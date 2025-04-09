@@ -44,14 +44,14 @@ export function SettingsForm({username}: { username: string | null | undefined }
             <Input defaultValue={username ?? undefined} name="username" required className="my-3" min={2} maxLength={21} />
 
             {state?.status === "error" && (
-                <p className="text-red-500 mt-2">{state.message}</p>
+                <p className="text-destructive mt-2">{state.message}</p>
             )}
 
             <div className="w-full flex mt-5 gap-x-5 justify-end">
                 <Button variant="secondary" asChild type="button">
                     <Link href="/">Cancel</Link>
                 </Button>
-                <SubmitButton />
+                <SubmitButton text="Change Username" />
             </div>
         </form>
     )

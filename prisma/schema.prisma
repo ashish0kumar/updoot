@@ -15,12 +15,23 @@ datasource db {
 }
 
 model User {
-  id        String  @id
-  email     String
-  firstName String
-  lastName  String
-  imageUrl  String?
-  userName  String? @unique
+  id                String      @id
+  email             String
+  firstName         String
+  lastName          String
+  imageUrl          String?
+  userName          String?     @unique
+  createdSubreddits Subreddit[]
 
   createdAt DateTime @default(now())
+}
+
+model Subreddit {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
