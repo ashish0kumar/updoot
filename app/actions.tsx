@@ -26,7 +26,7 @@ export async function updateUsername(prevState: any, formData: FormData) {
         })
 
         return {
-            message: "Username updated successfully",
+            message: "Username updated!",
             status: "green",
         }
 
@@ -34,7 +34,7 @@ export async function updateUsername(prevState: any, formData: FormData) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === "P2002") {
                 return {
-                    message: "Username already taken",
+                    message: "Username already taken!",
                     status: "error",
                 }
             }
@@ -54,11 +54,13 @@ export async function createCommunity(prevState: any, formData: FormData) {
 
     try {
         const name = formData.get("name") as string;
+        const desc = formData.get("description") as string;
 
         const data = await prisma.subreddit.create({
             data: {
                 name: name,
                 userId: user.id,
+                description: desc,
             }
         })
 
@@ -68,12 +70,46 @@ export async function createCommunity(prevState: any, formData: FormData) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             if (e.code === "P2002") {
                 return {
-                    message: "Community name already taken",
+                    message: "Community name already taken!",
                     status: "error",
                 }
             }
         }
 
         throw e
+    }
+}
+
+export async function updateSubDescription(prevState: any, formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return redirect("/api/auth/login");
+    }
+
+    try {
+        const subName = formData.get("subName") as string;
+        const desc = formData.get("description") as string;
+
+        await prisma.subreddit.update({
+            where: {
+                name: subName,
+            },
+            data: {
+                description: desc,
+            }
+        })
+
+        return {
+            message: "Description updated!",
+            status: "green",
+        }
+
+    } catch (e) {
+        return {
+            message: "Something went wrong!",
+            status: "error",
+        }
     }
 }

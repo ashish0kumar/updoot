@@ -5,6 +5,7 @@ import { SubmitButton } from "@/app/components/SubmitButtons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -45,6 +46,10 @@ export default function SubredditPage() {
                         r/ 
                     </p>
                     <Input name="name" required className="pl-7" minLength={2} maxLength={21} placeholder="Community name *" />
+                </div>
+
+                <div className="relative mt-4">
+                    <Textarea name="description" maxLength={100} placeholder="Description" />
                 </div>
 
                 <p className="text-destructive mt-2">{state.message}</p>
