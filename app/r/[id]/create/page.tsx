@@ -1,4 +1,4 @@
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import pfp from "../../../../public/pfp.png";
 import { Separator } from "@/components/ui/separator";
@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageIcon, Text } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { TiptapEditor } from "@/app/components/TiptapEditor";
+import { SubmitButton } from "@/app/components/SubmitButtons";
 
 const rules = [
     {
@@ -40,7 +42,7 @@ const rules = [
 
 export default function CreatePostRoute({params}: { params: { id: string } }) {
     return (
-        <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-6">
+        <div className="max-w-[1000px] mx-auto flex gap-x-20 mt-6">
             <div className="w-[65%] flex flex-col gap-y-4">
                 <h1 className="text-3xl font-extrabold tracking-tight">Create a Post</h1>
                 <h1 className="font-semibold text-lg">
@@ -62,7 +64,11 @@ export default function CreatePostRoute({params}: { params: { id: string } }) {
                             <form>
                                 <CardHeader>
                                     <Input required name="title" placeholder="Title" />
+                                    <TiptapEditor />
                                 </CardHeader>
+                                <CardFooter className="flex justify-end">
+                                    <SubmitButton text="Create Post" />
+                                </CardFooter>
                             </form>
                         </Card>
                     </TabsContent>
