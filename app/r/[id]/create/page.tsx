@@ -85,7 +85,7 @@ export default function CreatePostRoute({params}: { params: { id: string } }) {
                                         required 
                                         name="title" 
                                         placeholder="Title" 
-                                        value={title ?? undefined}
+                                        value={title ?? ''}
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
 

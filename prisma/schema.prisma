@@ -26,6 +26,7 @@ model User {
   createdAt DateTime @default(now())
 
   posts Post[]
+  votes Vote[]
 }
 
 model Subreddit {
@@ -52,4 +53,22 @@ model Post {
   subName   String?
   User      User?      @relation(fields: [userId], references: [id])
   userId    String?
+
+  votes Vote[]
+}
+
+enum TypeOfVote {
+  UP
+  DOWN
+}
+
+model Vote {
+  id String @id @default(uuid())
+
+  Post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  voteType TypeOfVote
 }

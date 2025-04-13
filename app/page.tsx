@@ -6,12 +6,57 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CreatePostCard } from "./components/CreatePostCard";
+import prisma from "./lib/db";
+import { PostCard } from "./components/PostCard";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function Home() {
+async function getData() {
+  const data = await prisma.post.findMany({
+    select: {
+      title: true,
+      createdAt: true,
+      textContent: true,
+      id: true,
+      imageString: true,
+      User: {
+        select: {
+          userName: true,
+        }
+      },
+      subName: true,
+      votes: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  })
+
+  return data;
+}
+
+export default async function Home() {
+  const data = await getData();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
   return (
-    <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-6">
+    <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-6 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard />
+
+        {data.map((post) => (
+          <PostCard 
+            key={post.id} 
+            id={post.id}
+            title={post.title}
+            jsonContent={post.textContent}
+            imageString={post.imageString}
+            subName={post.subName as string}
+            userName={post.User?.userName as string}
+            voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
+            currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
+          />
+        ))}
       </div>
       <div className="w-[35%]">
         <Card>
@@ -29,7 +74,7 @@ export default function Home() {
 
             <div className="flex flex-col gap-y-4 mb-3">
               <Button asChild variant="secondary" className="rounded-full mx-2">
-                <Link href="/r/cats/create">Create Post</Link>
+                <Link href="/r/community/create">Create Post</Link>
               </Button>
               <Button asChild className="rounded-full mx-2">
                 <Link href="/r/create">Create Community</Link>

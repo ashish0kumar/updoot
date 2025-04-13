@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { ArrowDown, ArrowUp, Loader2 } from "lucide-react"
 import { useFormStatus } from "react-dom"
 
 export function SubmitButton({text}: { text: string }) {
@@ -32,6 +32,40 @@ export function SaveButton() {
             ) : (
                 <Button className="mt-4 w-full" size="sm" type="submit">
                     Save
+                </Button>
+            )}
+        </>
+    )
+}
+
+export function UpVote({currentVote}: { currentVote: 'UP' | 'DOWN' | null | undefined }) {
+    const { pending } = useFormStatus()
+    return (
+        <>
+            {pending ? (
+                <Button variant={currentVote === 'UP' ? 'default' : 'outline'}>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                </Button>
+            ) : (
+                <Button variant={currentVote === 'UP' ? 'default' : 'outline'}>
+                    <ArrowUp className="w-4 h-4" />
+                </Button>
+            )}
+        </>
+    )
+}
+
+export function DownVote({ currentVote }: { currentVote: 'UP' | 'DOWN' | null | undefined }) {
+    const { pending } = useFormStatus()
+    return (
+        <>
+            {pending ? (
+                <Button variant={currentVote === 'DOWN' ? 'downvote' : 'outline'}>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                </Button>
+            ) : (
+                <Button variant={currentVote === 'DOWN' ? 'downvote' : 'outline'}>
+                    <ArrowDown className="w-4 h-4" />
                 </Button>
             )}
         </>

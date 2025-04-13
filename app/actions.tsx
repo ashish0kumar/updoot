@@ -3,7 +3,8 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation";
 import prisma from "./lib/db";
-import { Prisma } from "@prisma/client";
+import { Prisma, TypeOfVote } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function updateUsername(prevState: any, formData: FormData) {
     const { getUser } = getKindeServerSession();
@@ -139,4 +140,57 @@ export async function createPost(formData: FormData) {
     })
 
     return redirect(`/r/${subName}`);
+}
+
+export async function handleVote(formData: FormData) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        return redirect("/api/auth/login");
+    }
+
+    const postId = formData.get("postId") as string;
+    const voteType = formData.get("voteType") as TypeOfVote;
+
+    const vote = await prisma.vote.findFirst({
+        where: {
+            postId: postId,
+            userId: user.id,
+        }
+    })
+
+    if (vote) {
+        if (vote.voteType === voteType) {
+            await prisma.vote.delete({
+                where: {
+                    id: vote.id,
+                }
+            })
+
+            return revalidatePath("/");
+
+        } else {
+            await prisma.vote.update({
+                where: {
+                    id: vote.id,
+                },
+                data: {
+                    voteType: voteType,
+                }
+            })
+
+            return revalidatePath("/");
+        }
+    }
+        
+    await prisma.vote.create({
+        data: {
+            voteType: voteType,
+            postId: postId,
+            userId: user.id,
+        }
+    })
+
+    return revalidatePath("/");
 }
