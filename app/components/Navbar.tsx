@@ -6,6 +6,13 @@ import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { UserDropdown } from "./UserDropdown";
 
+import { Quicksand } from "next/font/google";
+
+const logoFont = Quicksand({
+    weight: ["700"],
+    subsets: ["latin"],
+});
+
 export async function Navbar() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -14,10 +21,9 @@ export async function Navbar() {
     return (
         <nav className="h-[10vh] w-full flex items-center justify-between border-b px-5 lg:px-14">
             <Link href="/" className="flex items-center gap-x-3">
-                <CircleChevronUp className="text-orange-600" />
-                <h1 className="w-fit hidden lg:block text-3xl font-extrabold text-orange-600">Updoot</h1>
+                <CircleChevronUp className="text-orange-600 mt-2" />
+                <h1 className={`w-fit hidden lg:block text-3xl font-extrabold text-orange-600 ${logoFont.className}`}>updoot</h1>
             </Link>
-
             <div className="flex items-center gap-x-4">
                 <ThemeToggle />
                 {user ? (
