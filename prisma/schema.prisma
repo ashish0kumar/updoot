@@ -24,6 +24,8 @@ model User {
   createdSubreddits Subreddit[]
 
   createdAt DateTime @default(now())
+
+  posts Post[]
 }
 
 model Subreddit {
@@ -34,4 +36,20 @@ model Subreddit {
   updatedAt   DateTime @updatedAt
   User        User?    @relation(fields: [userId], references: [id])
   userId      String?
+
+  posts Post[]
+}
+
+model Post {
+  id          String  @id @default(uuid())
+  title       String
+  textContent Json?
+  imageString String?
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Subreddit Subreddit? @relation(fields: [subName], references: [name])
+  subName   String?
+  User      User?      @relation(fields: [userId], references: [id])
+  userId    String?
 }

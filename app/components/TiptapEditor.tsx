@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import { Editor, EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from '@tiptap/extension-placeholder';
 import Link from "@tiptap/extension-link";
@@ -142,7 +142,7 @@ export const Menubar = ({ editor }: { editor: Editor | null }) => {
     );
 };
 
-export function TiptapEditor() {
+export function TiptapEditor({setJson, json}: {setJson: any, json: JSONContent | null}) {
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -155,12 +155,16 @@ export function TiptapEditor() {
                 placeholder: 'Body',
             }),
         ],
-        content: '<p></p>',
+        content: json ?? "<p></p>",
         editorProps: {
             attributes: {
                 class: 'prose dark:prose-invert max-w-none prose-p:leading-snug prose-headings:font-semibold prose-pre:bg-zinc-900 prose-a:text-blue-600 dark:prose-a:text-blue-400'
             }
         },
+        onUpdate: ({ editor }) => {
+            const json = editor.getJSON();
+            setJson(json);
+        }
     });
 
     return (

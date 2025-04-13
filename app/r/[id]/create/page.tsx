@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import pfp from "../../../../public/pfp.png";
@@ -8,6 +10,10 @@ import { ImageIcon, Text } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { TiptapEditor } from "@/app/components/TiptapEditor";
 import { SubmitButton } from "@/app/components/SubmitButtons";
+import { UploadDropzone } from "@/app/components/Uploadthing";
+import { useState } from "react";
+import { createPost } from "@/app/actions";
+import { JSONContent } from "@tiptap/react";
 
 const rules = [
     {
@@ -41,6 +47,10 @@ const rules = [
 ];
 
 export default function CreatePostRoute({params}: { params: { id: string } }) {
+    const [imageUrl, setImageUrl] = useState<null | string>(null);
+    const [json, setJson] = useState<null | JSONContent>(null);
+    const [title, setTitle] = useState<null | string>(null);
+
     return (
         <div className="max-w-[1000px] mx-auto flex gap-x-20 mt-6">
             <div className="w-[65%] flex flex-col gap-y-4">
@@ -61,22 +71,65 @@ export default function CreatePostRoute({params}: { params: { id: string } }) {
                     </TabsList>
                     <TabsContent className="mt-4" value="text">
                         <Card>
-                            <form>
+                            <form action={createPost}>
+                                <input type="hidden" name="imageUrl" value={imageUrl ?? undefined} />
+                                <input type="hidden" name="subName" value={params.id} />
+                                <input
+                                    type="hidden"
+                                    name="jsonContent"
+                                    value={json ? JSON.stringify(json) : ""}
+                                />
+
                                 <CardHeader>
-                                    <Input required name="title" placeholder="Title" />
-                                    <TiptapEditor />
+                                    <Input 
+                                        required 
+                                        name="title" 
+                                        placeholder="Title" 
+                                        value={title ?? undefined}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                    />
+
+                                    <TiptapEditor setJson={setJson} json={json} />
                                 </CardHeader>
+
                                 <CardFooter className="flex justify-end">
                                     <SubmitButton text="Create Post" />
                                 </CardFooter>
                             </form>
                         </Card>
                     </TabsContent>
+                    <TabsContent className="mt-4" value="image">
+                        <Card>
+                            <CardHeader>
+                                {imageUrl == null ? (
+                                    <UploadDropzone
+                                        className="ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-label:text-primary ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:after:bg-primary"
+                                        endpoint="imageUploader"
+                                        onClientUploadComplete={(res) => {
+                                            console.log("Files: ", res);
+                                            setImageUrl(res[0].url);
+                                        }}
+                                        onUploadError={(error: Error) => {
+                                            alert(`ERROR! ${error.message}`);
+                                        }}
+                                    />
+                                ) : (
+                                    <Image 
+                                        src={imageUrl} 
+                                        alt="uploaded image" 
+                                        width={500} 
+                                        height={400} 
+                                        className="h-80 rounded-lg w-full object-contain"
+                                    />
+                                )}
+                            </CardHeader>
+                        </Card>
+                    </TabsContent>
                 </Tabs>
             </div>
 
             <div className="w-[35%]">
-                <Card className="flex flex-col p-5 shadow-lg">
+                <Card className="flex flex-col p-5">
                     <div className="flex items-center gap-x-2">
                         <Image className="h-10 w-10" src={pfp} alt="pfp" />
                         <h1 className="font-medium">Posting to Updoot</h1>

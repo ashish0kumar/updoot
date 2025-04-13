@@ -37,7 +37,7 @@ export default async function SubredditRoute({params}: {params: { id: string }})
             </div>
 
             <div className="w-[35%]">
-                <Card className="pb-2 shadow-lg">
+                <Card className="pb-2">
                     <div className="bg-muted rounded-md p-4 font-semibold">About Community</div>
                     <div className="p-4">
                         <div className="flex items-center gap-x-4">
