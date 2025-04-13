@@ -9,6 +9,8 @@ import { CreatePostCard } from "./components/CreatePostCard";
 import prisma from "./lib/db";
 import { PostCard } from "./components/PostCard";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { Suspense } from "react";
+import { SuspenseCard } from "./components/SuspenseCard";
 
 async function getData() {
   const data = await prisma.post.findMany({
@@ -34,29 +36,15 @@ async function getData() {
   return data;
 }
 
-export default async function Home() {
-  const data = await getData();
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-
+export default function Home() {
   return (
     <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-6 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard />
 
-        {data.map((post) => (
-          <PostCard 
-            key={post.id} 
-            id={post.id}
-            title={post.title}
-            jsonContent={post.textContent}
-            imageString={post.imageString}
-            subName={post.subName as string}
-            userName={post.User?.userName as string}
-            voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
-            currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
-          />
-        ))}
+        <Suspense fallback={<SuspenseCard />}>
+          <ShowItems />
+        </Suspense>
       </div>
       <div className="w-[35%]">
         <Card>
@@ -85,4 +73,28 @@ export default async function Home() {
       </div>
     </div>
   );
+}
+
+async function ShowItems() {
+  const data = await getData();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  return (
+    <>
+      {data.map((post) => (
+        <PostCard
+          key={post.id}
+          id={post.id}
+          title={post.title}
+          jsonContent={post.textContent}
+          imageString={post.imageString}
+          subName={post.subName as string}
+          userName={post.User?.userName as string}
+          voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
+          currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
+        />
+      ))}
+    </>
+  )
 }

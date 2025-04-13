@@ -79,7 +79,7 @@ export function PostCard({
                 <div className="mx-4 mt-1 mb-4 flex items-center gap-x-5">
                     <div className="flex items-center gap-x-1">
                         <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                        <p className="text-muted-foreground font-medium text-sm">15 comments</p>
+                        <p className="text-muted-foreground font-medium text-sm">15 Comments</p>
                     </div>
                     <CopyLink id={id} />
                 </div>
