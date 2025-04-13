@@ -43,11 +43,11 @@ export function UpVote({currentVote}: { currentVote: 'UP' | 'DOWN' | null | unde
     return (
         <>
             {pending ? (
-                <Button variant={currentVote === 'UP' ? 'default' : 'outline'}>
+                <Button variant={currentVote === 'UP' ? 'default' : 'outline'} className="rounded-full" size="sm">
                     <Loader2 className="w-4 h-4 animate-spin" />
                 </Button>
             ) : (
-                <Button variant={currentVote === 'UP' ? 'default' : 'outline'}>
+                <Button variant={currentVote === 'UP' ? 'default' : 'outline'} className="rounded-full" size="sm">
                     <ArrowUp className="w-4 h-4" />
                 </Button>
             )}
@@ -60,11 +60,11 @@ export function DownVote({ currentVote }: { currentVote: 'UP' | 'DOWN' | null | 
     return (
         <>
             {pending ? (
-                <Button variant={currentVote === 'DOWN' ? 'downvote' : 'outline'}>
+                <Button variant={currentVote === 'DOWN' ? 'downvote' : 'outline'} className="rounded-full" size="sm">
                     <Loader2 className="w-4 h-4 animate-spin" />
                 </Button>
             ) : (
-                <Button variant={currentVote === 'DOWN' ? 'downvote' : 'outline'}>
+                <Button variant={currentVote === 'DOWN' ? 'downvote' : 'outline'} className="rounded-full" size="sm">
                     <ArrowDown className="w-4 h-4" />
                 </Button>
             )}
