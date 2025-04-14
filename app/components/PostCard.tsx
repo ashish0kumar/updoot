@@ -51,6 +51,13 @@ export function PostCard({
             </div>
             <div>
                 <div className="flex items-center gap-x-2 py-2 px-4">
+                    <Image 
+                        src={`https://avatar.vercel.sh/${subName}`} 
+                        alt="subreddit image" 
+                        width={10} 
+                        height={10} 
+                        className="rounded-full h-5 w-5"
+                    />
                     <Link href={`/r/${subName}`} className="font-semibold text-xs">
                         r/{subName}
                     </Link>

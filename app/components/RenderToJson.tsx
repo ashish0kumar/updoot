@@ -20,7 +20,7 @@ const handlers: NodeHandlers = {
 
 export function RenderToJson({data}: {data: any}) {
     return (
-        <div className="prose dark:prose-invert max-w-none prose-p:leading-snug prose-headings:font-semibold prose-pre:bg-zinc-900 prose-a:text-blue-600 dark:prose-a:text-blue-400">
+        <div className="prose dark:prose-invert max-w-none prose-p:leading-none prose-headings:font-semibold prose-pre:bg-zinc-900 prose-a:text-blue-600 dark:prose-a:text-blue-400">
             <TipTapRender handlers={handlers} node={data} />
         </div>
     )
