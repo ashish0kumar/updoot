@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { CakeSlice } from "lucide-react";
+import { CakeSlice, FileQuestion } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -67,22 +67,35 @@ export default async function SubredditRoute({params, searchParams}: {params: { 
             <div className="w-[65%] flex flex-col gap-y-5">
                 <CreatePostCard />
 
-                {data?.posts.map((post) => (
-                    <PostCard
-                        key={post.id}
-                        id={post.id}
-                        title={post.title}
-                        jsonContent={post.textContent}
-                        imageString={post.imageString}
-                        commentsCount={post.comments.length}
-                        subName={data.name}
-                        userName={post.User?.userName as string}
-                        voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
-                        currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
-                    />
-                ))}
+                {data?.posts.length === 0 ? (
+                    <div className="flex min-h-[300px] flex-col justify-center items-center rounded-md border border-dashed p-8 text-center">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                            <FileQuestion className="h-10 w-10 text-primary" />
+                        </div>
 
-                <Pagination totalPages={Math.ceil(count / 10)} />
+                        <h2 className="mt-6 text-xl font-semibold">
+                            No post have been made yet
+                        </h2>
+                    </div>
+                ) : (
+                        <>
+                            {data?.posts.map((post) => (
+                                <PostCard
+                                    key={post.id}
+                                    id={post.id}
+                                    title={post.title}
+                                    jsonContent={post.textContent}
+                                    imageString={post.imageString}
+                                    commentsCount={post.comments.length}
+                                    subName={data.name}
+                                    userName={post.User?.userName as string}
+                                    voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
+                                    currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
+                                />
+                            ))}
+                            <Pagination totalPages={Math.ceil(count / 10)} />
+                        </>
+                )}
             </div>
 
             <div className="w-[35%]">

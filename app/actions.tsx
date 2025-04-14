@@ -65,7 +65,7 @@ export async function createCommunity(prevState: any, formData: FormData) {
             }
         })
 
-        return redirect("/")
+        return redirect(`/r/${data.name}`)
 
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -129,7 +129,7 @@ export async function createPost(formData: FormData) {
     const jsonContentStr = formData.get("jsonContent") as string;
     const jsonContent = jsonContentStr ? JSON.parse(jsonContentStr) : null;
 
-    await prisma.post.create({
+    const data = await prisma.post.create({
         data: {
             title: title,
             imageString: imageUrl ?? undefined,
@@ -139,7 +139,7 @@ export async function createPost(formData: FormData) {
         }
     })
 
-    return redirect(`/r/${subName}`);
+    return redirect(`/r/${data.id}`);
 }
 
 export async function handleVote(formData: FormData) {
