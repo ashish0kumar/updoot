@@ -1,4 +1,5 @@
 import { handleVote } from "@/app/actions"
+import { CommentForm } from "@/app/components/CommentForm"
 import { CopyLink } from "@/app/components/CopyLink"
 import { RenderToJson } from "@/app/components/RenderToJson"
 import { DownVote, UpVote } from "@/app/components/SubmitButtons"
@@ -30,6 +31,21 @@ async function getData(id: string) {
                     voteType: true,
                 }
             },
+            comments: {
+                orderBy: {
+                    createdAt: "desc"
+                },
+                select: {
+                    id: true,
+                    text: true,
+                    User: {
+                        select: {
+                            userName: true,
+                            imageUrl: true,
+                        }
+                    }
+                }
+            },
             Subreddit: {
                 select: {
                     name: true,
@@ -58,9 +74,9 @@ export default async function PostPage({params}: {params: { id: string }}) {
     const user = await getUser()
 
     return (
-        <div className="max-w-[1200px] mx-auto flex gap-x-16 mt-6 mb-10">
+        <div className="max-w-[1200px] mx-auto flex gap-x-14 mt-6 mb-10">
             <div className="w-[70%] flex flex-col gap-y-5">
-                <Card className="flex overflow-hidden">
+                <Card className="flex overflow-hidden pl-2 pt-2 pr-8 pb-6">
                     <div className="flex">
                         <div className="flex flex-col items-center gap-y-2 p-2">
                             <form action={handleVote}>
@@ -104,7 +120,7 @@ export default async function PostPage({params}: {params: { id: string }}) {
                                     <Image
                                         src={data.imageString}
                                         alt="Post image"
-                                        width={700}
+                                        width={601}
                                         height={500}
                                         className="w-full h-full rounded-lg object-contain mb-4"
                                     />
@@ -117,9 +133,33 @@ export default async function PostPage({params}: {params: { id: string }}) {
                             <div className="mx-1 mt-2 mb-4 flex items-center gap-x-5">
                                 <div className="flex items-center gap-x-1">
                                     <MessageCircle className="h-5 w-5 text-muted-foreground" />
-                                    <p className="text-muted-foreground font-medium text-md">15 Comments</p>
+                                    <p className="text-muted-foreground font-medium text-md">{data.comments.length} {data.comments.length > 1 ? "Comments" : "Comment"}</p>
                                 </div>
                                 <CopyLink id={data.id} variant="lg" />
+                            </div>
+
+                            <CommentForm postId={params.id} />
+
+                            <div className="flex flex-col gap-y-7 mb-4">
+                                {data.comments.map((comment) => (
+                                    <div key={comment.id} className="flex flex-col">
+                                        <div className="flex items-center gap-x-3">
+                                            <img
+                                                src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${user?.email || user?.id}`}
+                                                className="w-7 h-7 rounded-full"
+                                                alt="user avatar"
+                                            />
+
+                                            <h3 className="text-sm font-medium">
+                                                u/{comment.User?.userName}
+                                            </h3>
+                                        </div>
+
+                                        <p className="ml-10 mt-1 text-secondary-foreground text-sm tracking-wide">
+                                            {comment.text}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

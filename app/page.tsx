@@ -25,6 +25,11 @@ async function getData(searchParams: string) {
         textContent: true,
         id: true,
         imageString: true,
+        comments: {
+          select: {
+            id: true
+          }
+        },
         User: {
           select: {
             userName: true,
@@ -95,6 +100,7 @@ async function ShowItems({ searchParams }: { searchParams: { page: string } }) {
           title={post.title}
           jsonContent={post.textContent}
           imageString={post.imageString}
+          commentsCount={post.comments.length}
           subName={post.subName as string}
           userName={post.User?.userName as string}
           voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}

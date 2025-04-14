@@ -18,6 +18,7 @@ interface iAppProps {
     imageString: string | null;
     voteCount: number;
     currentVote?: 'UP' | 'DOWN' | null;
+    commentsCount: number;
 }
 
 export function PostCard({
@@ -28,10 +29,11 @@ export function PostCard({
     userName,
     imageString,
     voteCount,
-    currentVote
+    currentVote,
+    commentsCount,
 }: iAppProps) {
     return (
-        <Card className="flex relative overflow-hidden">
+        <Card className="flex relative overflow-hidden p-1">
             <div className="flex flex-col items-center gap-y-2 p-2">
                 <form action={handleVote}>
                     <input type="hidden" name="voteType" value="UP" />
@@ -84,7 +86,7 @@ export function PostCard({
                 <div className="mx-1 mt-2 mb-4 flex items-center gap-x-5">
                     <div className="flex items-center gap-x-1">
                         <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                        <p className="text-muted-foreground font-medium text-sm">15 Comments</p>
+                        <p className="text-muted-foreground font-medium text-sm">{commentsCount} Comments</p>
                     </div>
                     <CopyLink id={id} />
                 </div>
