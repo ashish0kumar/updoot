@@ -38,9 +38,7 @@ export function PostCard({
                     <input type="hidden" name="postId" value={id} />
                     <UpVote currentVote={currentVote} />
                 </form>
-                <span className={`font-medium ${currentVote === 'UP' ? 'text-orange-500' :
-                        currentVote === 'DOWN' ? 'text-blue-500' : ''
-                    }`}>
+                <span className="font-medium">
                     {voteCount}
                 </span>
                 <form action={handleVote}>

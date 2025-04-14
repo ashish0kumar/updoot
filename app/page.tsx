@@ -11,39 +11,45 @@ import { PostCard } from "./components/PostCard";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Suspense } from "react";
 import { SuspenseCard } from "./components/SuspenseCard";
+import Pagination from "./components/Pagination";
 
-async function getData() {
-  const data = await prisma.post.findMany({
-    select: {
-      title: true,
-      createdAt: true,
-      textContent: true,
-      id: true,
-      imageString: true,
-      User: {
-        select: {
-          userName: true,
-        }
+async function getData(searchParams: string) {
+  const [count, data] = await prisma.$transaction([
+    prisma.post.count(),
+    prisma.post.findMany({
+      take: 10,
+      skip: searchParams ? (Number(searchParams) - 1) * 10 : 0,
+      select: {
+        title: true,
+        createdAt: true,
+        textContent: true,
+        id: true,
+        imageString: true,
+        User: {
+          select: {
+            userName: true,
+          }
+        },
+        subName: true,
+        votes: true,
       },
-      subName: true,
-      votes: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  })
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  ])
 
-  return data;
+  return {count, data};
 }
 
-export default function Home() {
+export default function Home({ searchParams }: { searchParams: { page: string }}) {
   return (
     <div className="max-w-[1000px] mx-auto flex gap-x-10 mt-6 mb-10">
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard />
 
         <Suspense fallback={<SuspenseCard />}>
-          <ShowItems />
+          <ShowItems searchParams={searchParams} />
         </Suspense>
       </div>
       <div className="w-[35%]">
@@ -75,8 +81,8 @@ export default function Home() {
   );
 }
 
-async function ShowItems() {
-  const data = await getData();
+async function ShowItems({ searchParams }: { searchParams: { page: string } }) {
+  const {count, data} = await getData(searchParams.page);
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
@@ -95,6 +101,8 @@ async function ShowItems() {
           currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
         />
       ))}
+
+      <Pagination totalPages={Math.ceil(count / 10)} />
     </>
   )
 }
