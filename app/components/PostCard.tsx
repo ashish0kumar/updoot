@@ -32,7 +32,7 @@ export function PostCard({
 }: iAppProps) {
     return (
         <Card className="flex relative overflow-hidden">
-            <div className="flex flex-col items-center gap-y-2 bg-muted p-2">
+            <div className="flex flex-col items-center gap-y-2 p-2">
                 <form action={handleVote}>
                     <input type="hidden" name="voteType" value="UP" />
                     <input type="hidden" name="postId" value={id} />
@@ -48,7 +48,7 @@ export function PostCard({
                 </form>
             </div>
             <div>
-                <div className="flex items-center gap-x-2 py-2 px-4">
+                <div className="flex items-center gap-x-2 p-2">
                     <Image 
                         src={`https://avatar.vercel.sh/${subName}`} 
                         alt="subreddit image" 
@@ -63,12 +63,12 @@ export function PostCard({
                         Posted by <span>u/{userName}</span>
                     </p>
                 </div>
-                <div className="px-3">
+                <div className="px-2">
                     <Link href={`/post/${id}`}>
-                        <h1 className="font-medium mt-1 text-lg pl-1">{title}</h1>
+                        <h1 className="font-medium mt-1 text-lg">{title}</h1>
                     </Link>
                 </div>
-                <div className="max-h-[300px] overflow-hidden p-4">
+                <div className="max-h-[300px] overflow-hidden p-2">
                     {imageString ? (
                         <Image
                             src={imageString}
@@ -81,7 +81,7 @@ export function PostCard({
                         <RenderToJson data={jsonContent} />
                     )}
                 </div>
-                <div className="mx-4 mt-1 mb-4 flex items-center gap-x-5">
+                <div className="mx-1 mt-2 mb-4 flex items-center gap-x-5">
                     <div className="flex items-center gap-x-1">
                         <MessageCircle className="h-4 w-4 text-muted-foreground" />
                         <p className="text-muted-foreground font-medium text-sm">15 Comments</p>

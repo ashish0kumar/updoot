@@ -105,7 +105,7 @@ function PaginationNumber({
         {
             "rounded-l-md": position === "first" || position === "single",
             "rounded-r-md": position === "last" || position === "single",
-            "z-10 bg-secondary text-white": isActive,
+            "z-10 bg-secondary": isActive,
             "hover:bg-muted": !isActive && position !== "middle",
             "text-gray-300": position === "middle",
         }
