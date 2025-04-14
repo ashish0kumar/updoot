@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 export function SuspenseCard() {
     return (
         <div className="space-y-4 w-full max-w-2xl mx-auto">
-            <div className="flex rounded-lg overflow-hidden border mb-6">
+            <div className="flex rounded-lg overflow-hidden border">
                 <div className="flex flex-col items-center py-4 px-3 w-16">
                     <Skeleton className="h-6 w-6 rounded-md" />
                     <Skeleton className="h-6 w-8 my-2" />

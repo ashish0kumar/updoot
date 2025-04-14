@@ -48,7 +48,7 @@ export default function Home({ searchParams }: { searchParams: { page: string }}
       <div className="w-[65%] flex flex-col gap-y-5">
         <CreatePostCard />
 
-        <Suspense fallback={<SuspenseCard />}>
+        <Suspense fallback={<SuspenseCard />} key={searchParams.page}>
           <ShowItems searchParams={searchParams} />
         </Suspense>
       </div>
