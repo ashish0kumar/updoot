@@ -10,6 +10,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { CakeSlice, FileQuestion } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 async function getData(name: string, searchParams: string) {
     const [count, data] = await prisma.$transaction([
@@ -53,6 +54,10 @@ async function getData(name: string, searchParams: string) {
             }
         })
     ])
+
+    if (!data) {
+        return notFound();
+    }
 
     return {count, data};
 }

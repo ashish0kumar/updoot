@@ -12,6 +12,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Suspense } from "react";
 import { SuspenseCard } from "./components/SuspenseCard";
 import Pagination from "./components/Pagination";
+import { FileQuestion } from "lucide-react";
 
 async function getData(searchParams: string) {
   const [count, data] = await prisma.$transaction([
@@ -93,22 +94,38 @@ async function ShowItems({ searchParams }: { searchParams: { page: string } }) {
 
   return (
     <>
-      {data.map((post) => (
-        <PostCard
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          jsonContent={post.textContent}
-          imageString={post.imageString}
-          commentsCount={post.comments.length}
-          subName={post.subName as string}
-          userName={post.User?.userName as string}
-          voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
-          currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
-        />
-      ))}
+      {data.length === 0 ? (
+        <div className="flex min-h-[300px] flex-col justify-center items-center rounded-md border border-dashed p-8 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+            <FileQuestion className="h-10 w-10 text-primary" />
+          </div>
+          <h2 className="mt-6 text-xl font-semibold">
+            No posts yet
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+            Be the first to create a post on Updoot!
+          </p>
+        </div>
+      ) : (
+        <>
+          {data.map((post) => (
+          <PostCard
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            jsonContent={post.textContent}
+            imageString={post.imageString}
+            commentsCount={post.comments.length}
+            subName={post.subName as string}
+            userName={post.User?.userName as string}
+            voteCount={post.votes.reduce((acc, vote) => acc + (vote.voteType === 'UP' ? 1 : -1), 0)}
+            currentVote={user ? post.votes.find(vote => vote.userId === user.id)?.voteType || null : null}
+          />
+          ))}
 
       <Pagination totalPages={Math.ceil(count / 10)} />
+        </>
+      )}
     </>
   )
 }
