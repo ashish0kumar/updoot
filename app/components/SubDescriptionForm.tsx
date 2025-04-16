@@ -1,11 +1,10 @@
 "use client"
-
 import { Textarea } from "@/components/ui/textarea"
 import { SaveButton } from "./SubmitButtons"
 import { updateSubDescription } from "../actions"
 import { useFormState } from "react-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface iAppProps {
     subName: string;
@@ -17,9 +16,10 @@ const initialState = {
     status: "",
 }
 
-export function SubDescriptionForm({description, subName}: iAppProps) {
-    const [state, formAction] = useFormState(updateSubDescription, initialState)
-    const { toast } = useToast()
+export function SubDescriptionForm({ description, subName }: iAppProps) {
+    const [state, formAction] = useFormState(updateSubDescription, initialState);
+    const { toast } = useToast();
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
         if (state.status === "green") {
@@ -40,12 +40,14 @@ export function SubDescriptionForm({description, subName}: iAppProps) {
         <form action={formAction} className="mt-5">
             <input type="hidden" name="subName" value={subName} />
             <Textarea
-                placeholder="Create a description for your community" 
-                maxLength={100} 
-                name="description" 
+                placeholder="Create a description for your community"
+                maxLength={100}
+                name="description"
                 defaultValue={description ?? undefined}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
             />
-            <SaveButton />
+            {isFocused && <SaveButton />}
         </form>
     )
 }

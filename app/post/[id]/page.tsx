@@ -119,13 +119,16 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                             </div>
                             <div className="overflow-hidden px-2 py-3">
                                 {data.imageString && (
-                                    <Image
-                                        src={data.imageString}
-                                        alt="Post image"
-                                        width={601}
-                                        height={500}
-                                        className="w-full h-full rounded-lg object-contain mb-4"
-                                    />
+                                    <div className="relative w-full max-h-[600px] overflow-hidden rounded-lg mb-4">
+                                        <Image
+                                            src={data.imageString}
+                                            alt="Post image"
+                                            width={1200}
+                                            height={800}
+                                            className="w-full object-contain max-h-[600px] rounded-lg"
+                                            priority
+                                        />
+                                    </div>
                                 )}
 
                                 {data.textContent && (
