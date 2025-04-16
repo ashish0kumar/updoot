@@ -72,10 +72,12 @@ export default async function SubredditRoute({params, searchParams}: {params: { 
                         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
                             <FileQuestion className="h-10 w-10 text-primary" />
                         </div>
-
                         <h2 className="mt-6 text-xl font-semibold">
-                            No post have been made yet
+                            No posts yet
                         </h2>
+                        <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+                            Be the first to create a post in this community!
+                        </p>
                     </div>
                 ) : (
                         <>

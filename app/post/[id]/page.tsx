@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
-import { CakeSlice, MessageCircle } from "lucide-react"
+import { CakeSlice, MessageCircle, MessageSquareOff } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -42,6 +42,8 @@ async function getData(id: string) {
                         select: {
                             userName: true,
                             imageUrl: true,
+                            email: true,
+                            id: true,
                         }
                     }
                 }
@@ -68,7 +70,7 @@ async function getData(id: string) {
     return data
 }
 
-export default async function PostPage({params}: {params: { id: string }}) {
+export default async function PostPage({ params }: { params: { id: string } }) {
     const data = await getData(params.id)
     const { getUser } = getKindeServerSession()
     const user = await getUser()
@@ -140,27 +142,41 @@ export default async function PostPage({params}: {params: { id: string }}) {
 
                             <CommentForm postId={params.id} />
 
-                            <div className="flex flex-col gap-y-7 mb-4">
-                                {data.comments.map((comment) => (
-                                    <div key={comment.id} className="flex flex-col">
-                                        <div className="flex items-center gap-x-3">
-                                            <img
-                                                src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${user?.email || user?.id}`}
-                                                className="w-7 h-7 rounded-full"
-                                                alt="user avatar"
-                                            />
+                            {data.comments.length > 0 ? (
+                                <div className="flex flex-col gap-y-7 mb-4">
+                                    {data.comments.map((comment) => (
+                                        <div key={comment.id} className="flex flex-col">
+                                            <div className="flex items-center gap-x-3">
+                                                <img
+                                                    src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${comment.User?.email || comment.User?.id}`}
+                                                    className="w-7 h-7 rounded-full"
+                                                    alt="user avatar"
+                                                />
 
-                                            <h3 className="text-sm font-medium">
-                                                u/{comment.User?.userName}
-                                            </h3>
+                                                <h3 className="text-sm font-medium">
+                                                    u/{comment.User?.userName}
+                                                </h3>
+                                            </div>
+
+                                            <p className="ml-10 mt-1 text-secondary-foreground text-sm tracking-wide">
+                                                {comment.text}
+                                            </p>
                                         </div>
-
-                                        <p className="ml-10 mt-1 text-secondary-foreground text-sm tracking-wide">
-                                            {comment.text}
-                                        </p>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex min-h-[200px] flex-col justify-center items-center rounded-md border border-dashed p-6 text-center my-4">
+                                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                                        <MessageSquareOff className="h-8 w-8 text-primary" />
                                     </div>
-                                ))}
-                            </div>
+                                    <h2 className="mt-4 text-lg font-semibold">
+                                        No comments yet
+                                    </h2>
+                                    <p className="mt-1 text-sm text-muted-foreground">
+                                        Be the first to share your thoughts!
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Card>
