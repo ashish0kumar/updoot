@@ -1,4 +1,4 @@
-# ![Updoot Logo](public/favicon.svg) [Updoot]( updoot-jet.vercel.app)
+# ![Updoot Logo](public/favicon.svg) [Updoot](https://updoot-jet.vercel.app)
 
 **Updoot** is a modern community platform inspired by **Reddit**. Users can
 create communities, create posts, share posts, vote, and engage in discussions.
