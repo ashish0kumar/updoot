@@ -13,8 +13,10 @@ import { Suspense } from "react";
 import { SuspenseCard } from "./components/SuspenseCard";
 import Pagination from "./components/Pagination";
 import { FileQuestion } from "lucide-react";
+import { unstable_noStore as noStore } from "next/cache"
 
 async function getData(searchParams: string) {
+  noStore()
   const [count, data] = await prisma.$transaction([
     prisma.post.count(),
     prisma.post.findMany({

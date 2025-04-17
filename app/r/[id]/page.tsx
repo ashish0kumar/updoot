@@ -11,8 +11,10 @@ import { CakeSlice, FileQuestion } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache"
 
 async function getData(name: string, searchParams: string) {
+    noStore()
     const [count, data] = await prisma.$transaction([
         prisma.post.count(),
         prisma.subreddit.findUnique({
