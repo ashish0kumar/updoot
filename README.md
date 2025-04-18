@@ -1,7 +1,8 @@
-# ![Updoot Logo](public/favicon.svg) [Updoot](https://updoot-jet.vercel.app)
+# ![Updoot Logo](public/favicon.svg) [updoot](https://updoot-jet.vercel.app)
 
-**Updoot** is a modern community platform inspired by **Reddit**. Users can
-create communities, create posts, share posts, vote, and engage in discussions.
+**updoot** is a modern, **Reddit-inspired** community platform where users can **create communities**, publish **rich media posts**, engage in **meaningful discussions**, and participate in a **dynamic voting system** that promotes the most valuable content.
+
+![screenshot](/assets/ss.png)
 
 ## Features
 
